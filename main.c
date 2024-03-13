@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
+//#include <conio.h>
 #include <string.h>
 
-FILE* converted;
+FILE* temp;
 FILE* csv;
 
 int get_length(char str[1000]){
@@ -18,55 +18,62 @@ int get_length(char str[1000]){
     return count-2;
 }
 
-void printStrArray(char *input,int count){
-    for(int i = 0;i<=count;i++){
-        for(int x = 0; x<=(sizeof(input[i])/sizeof(input[0]));x++){
-            printf("%c",input[i][x]);
-        }
-        
-    }
-}
+
 
 int main(){
     char buffer[1000];
     char *data;
     int count = 0;
+    int temp_count = 0;
+    char *dataptr;
     
     count = get_length("GlobalTemperatures.csv");
     char dates[count][20];
 
-    converted = fopen("GlobalTemperatures.txt","w");
+    temp = fopen("GlobalTemperatures.txt","w");
     csv = fopen("GlobalTemperatures.csv","r");
     if(!csv){
         printf("Error: could not open file");
         return 0;
     }
 
+//Loops through the first line once to get rid of the labels
     fgets(buffer,sizeof(buffer),csv);
-
     data = strtok(buffer,",");
+    for(int i = 0;i<8;i++){
+        data = strtok(NULL, ",");
+    }
 
-        fprintf(converted, "%s", data);
-        for(int i = 0;i<8;i++){
-            data = strtok(NULL, ",");
-            fprintf(converted, " %s",data);
-            
-        }
-
+//gets all the data and sorts them into arrays
     int index = 0;
+
    while(fgets(buffer,sizeof(buffer),csv)){    
         data = strtok(buffer,",");
-        strcpy(dates[count],data);
-        fprintf(converted, "%s",data);
+        strcpy(dates[index],data);
+        //fprintf(temp, "%s",data);
+        
 
         for(int i = 0;i<=7;i++){
+            double converted;
             data = strtok(NULL, ",");
             if (data!=NULL){
-                fprintf(converted, " %s",data);
+                converted = strtod(data, &dataptr);
+                switch (i)
+                {
+                case 0:
+                    
+                    break;
+                
+                default:
+                    break;
+                }
+                fprintf(temp, " %lf",converted);
+
             }     
         }
+        index+=1;
    }
-   printArray(*dates, count);
+    printf("%s", dates[1]);
     fclose(csv);
     
     
