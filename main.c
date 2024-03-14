@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include <conio.h>
+#include <conio.h>
 #include <string.h>
 
 FILE* temp;
 FILE* csv;
 
+//function to get the amount of rows
 int get_length(char str[1000]){
     FILE* input;
     int count = 0;
@@ -24,10 +25,11 @@ int main(){
     char buffer[1000];
     char *data;
     int count = 0;
-    int temp_count = 0;
     char *dataptr;
+    double converted;
+    int index = 0;
     
-    
+    //intializes the arrays
     count = get_length("GlobalTemperatures.csv");
     char dates[count][20];
     double landAvg[count];
@@ -40,8 +42,8 @@ int main(){
     double land_seaAvgUn[count];
 
 
-    temp = fopen("GlobalTemperatures.txt","w");
     csv = fopen("GlobalTemperatures.csv","r");
+    //checks if the file is valid
     if(!csv){
         printf("Error: could not open file");
         return 0;
@@ -55,35 +57,53 @@ int main(){
     }
 
 //gets all the data and sorts them into arrays
-    int index = 0;
-
+    
+    printf("%d ",count);
    while(fgets(buffer,sizeof(buffer),csv)){    
         data = strtok(buffer,",");
-        strcpy(dates[index],data);
-        //fprintf(temp, "%s",data);
-        
+        strcpy(dates[index],data); //copys the dates to the array
 
+        //loops through 7 times to get the values
         for(int i = 0;i<=7;i++){
-            double converted;
-            data = strtok(NULL, ",");
-            if (data!=NULL){
-                converted = strtod(data, &dataptr);
-                switch (i)
+            
+            data = strtok(NULL, ","); //uses comma as delimitter and parses through
+            if (data!=NULL){ //checks if value is Null
+                converted = strtod(data, &dataptr); //converts the data to a double 
+                switch (i)  //uses a switch statement to determine which data goes into which array
                 {
-                case /* constant-expression */:
-                    /* code */
+                case 0:
+                    landAvg[index] = converted;
                     break;
-                
+                case 1:
+                    landAvgUn[index] = converted;
+                    break;
+                case 2:
+                    landMax[index] = converted;
+                    break;
+                case 3:
+                    landMaxUn[index] = converted;
+                    break;
+                case 4:
+                    landMin[index] = converted;
+                    break;
+                case 5:
+                    landMinUn[index] = converted;
+                    break;
+                case 6:
+                    land_seaAvg[index] = converted;
+                    break;
+                case 7:
+                    land_seaAvgUn[index] = converted;
+                    break;
                 default:
+                    printf("something wrong happened");
                     break;
                 }
-                fprintf(temp, " %lf",converted);
 
             }     
         }
         index+=1;
    }
-    printf("%s", dates[1]);
     fclose(csv);
     
     
