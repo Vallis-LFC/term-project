@@ -27,8 +27,18 @@ int main(){
     int temp_count = 0;
     char *dataptr;
     
+    
     count = get_length("GlobalTemperatures.csv");
     char dates[count][20];
+    double landAvg[count];
+    double landAvgUn[count];
+    double landMax[count];
+    double landMaxUn[count];
+    double landMin[count];
+    double landMinUn[count];
+    double land_seaAvg[count];
+    double land_seaAvgUn[count];
+
 
     temp = fopen("GlobalTemperatures.txt","w");
     csv = fopen("GlobalTemperatures.csv","r");
@@ -60,8 +70,8 @@ int main(){
                 converted = strtod(data, &dataptr);
                 switch (i)
                 {
-                case 0:
-                    
+                case /* constant-expression */:
+                    /* code */
                     break;
                 
                 default:
